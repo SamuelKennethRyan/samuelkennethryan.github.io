@@ -1,0 +1,190 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Samuel K. Ryan — Critical Facilities &amp; Data Center Engineer / Builder</title>
+<meta name="description" content="Critical facilities and data center engineer who also builds the monitoring, alerting, and automation software that runs them. 14 years, global fleet, sole DCIM administrator and developer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f172a; --muted:#5b6676; --bg:#ffffff; --panel:#f7f9fc; --line:#e6eaf1;
+    --a1:#22d3ee; --a2:#3b82f6; --accent:#2563eb; --maxw:960px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;color:var(--ink);background:var(--bg);
+    font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.65}
+  h1,h2,h3,.stat b{font-family:Sora,Inter,sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+
+  /* HERO */
+  .hero{color:#eaf2ff;background:
+     radial-gradient(1200px 500px at 15% -10%, rgba(34,211,238,.18), transparent 60%),
+     radial-gradient(1000px 480px at 100% 0%, rgba(59,130,246,.22), transparent 55%),
+     linear-gradient(160deg,#0a1424 0%,#0d1b30 55%,#0a1626 100%);
+     position:relative;overflow:hidden;border-bottom:1px solid #0a1424}
+  .hero:before{content:"";position:absolute;inset:0;
+     background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
+     background-size:22px 22px;opacity:.5;pointer-events:none}
+  .hero .wrap{position:relative;padding:88px 24px 72px}
+  .eyebrow{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#8fe3f2;margin:0 0 14px;font-weight:600}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:0 0 16px;letter-spacing:-.01em}
+  .grad{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero .tag{font-size:clamp(1.05rem,2.2vw,1.35rem);color:#cfe0f5;font-weight:500;margin:0 0 18px;max-width:44rem}
+  .hero .lede{color:#9fb3cc;max-width:42rem;margin:0 0 30px}
+  .btns{display:flex;flex-wrap:wrap;gap:12px}
+  .btn{display:inline-block;padding:11px 18px;border-radius:9px;font-weight:600;font-size:.95rem}
+  .btn.primary{background:linear-gradient(90deg,var(--a1),var(--a2));color:#04101f}
+  .btn.primary:hover{filter:brightness(1.07);text-decoration:none}
+  .btn.ghost{border:1px solid rgba(255,255,255,.22);color:#eaf2ff}
+  .btn.ghost:hover{border-color:var(--a1);color:#fff;text-decoration:none}
+
+  /* STATS */
+  .stats{background:#081221;color:#dbe7f7;border-bottom:1px solid #0a1424}
+  .stats .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:26px 24px;text-align:center}
+  .stat b{display:block;font-size:1.7rem;line-height:1;background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat span{font-size:.82rem;color:#94a7c2}
+  @media(max-width:640px){.stats .wrap{grid-template-columns:repeat(2,1fr);gap:22px}}
+
+  section{padding:60px 0;border-bottom:1px solid var(--line)}
+  .h2wrap{margin:0 0 26px}
+  h2{font-size:1.5rem;margin:0 0 6px;letter-spacing:-.01em}
+  .h2wrap p{margin:0;color:var(--muted)}
+  .about p{max-width:44rem;color:#33404f} .about p+p{margin-top:14px}
+
+  /* CAPABILITY / WORK CARDS */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  @media(max-width:680px){.grid{grid-template-columns:1fr}}
+  .cap{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:22px;transition:transform .15s,box-shadow .15s,border-color .15s}
+  .cap:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(15,23,42,.08);border-color:#cfdbf0}
+  .ico{width:38px;height:38px;border-radius:9px;display:grid;place-items:center;margin-bottom:12px;
+     background:linear-gradient(135deg,rgba(34,211,238,.16),rgba(59,130,246,.16));color:var(--accent)}
+  .ico svg{width:20px;height:20px}
+  .cap h3{font-size:1.05rem;margin:0 0 6px}
+  .cap p{margin:0;color:var(--muted);font-size:.96rem}
+
+  .work h3{font-size:1.05rem;margin:0 0 6px}
+  .work .cap p{color:#4a5666}
+
+  /* SKILLS */
+  .skillgroup{margin-bottom:18px}
+  .skillgroup .lbl{font-weight:600;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-bottom:8px}
+  .pills{display:flex;flex-wrap:wrap;gap:8px}
+  .pill{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:5px 13px;font-size:.88rem;color:#2b3646}
+
+  footer{padding:52px 0 80px;text-align:center;color:var(--muted)}
+  footer .btns{justify-content:center;margin-top:14px}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Critical Facilities &middot; DCIM &middot; Software</p>
+    <h1>Samuel K. Ryan<br><span class="grad">Data center engineer who builds the software that runs it.</span></h1>
+    <p class="tag">I keep mission-critical power and cooling online across a global IT fleet — and I build the monitoring, alerting, and automation that keeps it that way.</p>
+    <p class="lede">Electrician by trade, mathematician by training, engineer and builder by practice. Fourteen years turning raw platforms and scattered telemetry into systems people can rely on.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:skr1831@gmail.com">Get in touch</a>
+      <a class="btn ghost" href="Samuel_Ryan_Resume.pdf" target="_blank" rel="noopener">Résumé (PDF)</a>
+      <a class="btn ghost" href="https://www.linkedin.com/in/samuel-ryan-94671365" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" href="https://github.com/SamuelKennethRyan" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</div>
+
+<div class="stats">
+  <div class="wrap">
+    <div class="stat"><b>14 yrs</b><span>critical facilities</span></div>
+    <div class="stat"><b>70+</b><span>global sites monitored</span></div>
+    <div class="stat"><b>99.9999%</b><span>availability target</span></div>
+    <div class="stat"><b>Sole</b><span>DCIM admin &amp; developer</span></div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <section>
+    <div class="h2wrap"><h2>What I bring</h2><p>The rare hybrid: someone who understands the power and cooling <em>and</em> writes the code around it.</p></div>
+    <div class="grid">
+      <div class="cap">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="7" rx="1.5"/><rect x="3" y="13" width="18" height="7" rx="1.5"/><circle cx="7" cy="7.5" r="1" fill="currentColor" stroke="none"/><circle cx="7" cy="16.5" r="1" fill="currentColor" stroke="none"/></svg></div>
+        <h3>Own a DCIM platform end to end</h3>
+        <p>Deploy, migrate, and administer enterprise monitoring (Nlyte NAO/NEO) — asset lifecycle, monitoring profiles, and the messy integrations most people avoid.</p>
+      </div>
+      <div class="cap">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M8 9l-4 3 4 3"/><path d="M16 9l4 3-4 3"/><path d="M13 6l-2 12"/></svg></div>
+        <h3>Build monitoring &amp; automation software</h3>
+        <p>Replace brittle vendor pipelines with owned, tuned systems in .NET, SQL, and Python — alerting, incident management, reporting, and the glue between them.</p>
+      </div>
+      <div class="cap">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2v6"/><path d="M12 2a4 4 0 0 1 4 4v0a4 4 0 0 1-8 0v0a4 4 0 0 1 4-4z"/><path d="M5 22c0-4 3-7 7-7s7 3 7 7"/></svg></div>
+        <h3>Deliver critical-facility projects</h3>
+        <p>UPS, generator, and precision-cooling replacements; new-site build-outs; large-scale decommissions — across multiple countries, on budget, coordinating vendors.</p>
+      </div>
+      <div class="cap">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></div>
+        <h3>Keep the lights on</h3>
+        <p>Design for resiliency (including a Tier II → Tier III upgrade), respond to electrical and mechanical emergencies, and hold six-nines power and cooling from a small team.</p>
+      </div>
+      <div class="cap">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20V4"/><path d="M4 20h16"/><path d="M8 16l3-4 3 2 5-7"/></svg></div>
+        <h3>Turn telemetry into decisions</h3>
+        <p>Compile trended data from many platforms and sensors into reliable energy and capacity reporting — the internal source of truth even outside consultants rely on.</p>
+      </div>
+      <div class="cap">
+        <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v18"/><path d="M3 8h6M3 12h6M3 16h6"/><path d="M15 8h6M15 12h6M15 16h6"/></svg></div>
+        <h3>Bridge facilities and software</h3>
+        <p>Speak both languages fluently — so the monitoring actually reflects the plant, and the plant benefits from real automation instead of manual toil.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="work">
+    <div class="h2wrap"><h2>Selected work</h2><p>A few systems I designed, built, and own.</p></div>
+    <div class="grid">
+      <div class="cap"><h3>Enterprise DCIM Deployment &amp; Legacy Migration</h3><p>Led a solo, on-prem Nlyte rollout replacing an aging monitoring system across a global fleet. When the paid vendor stalled, I built it all myself — every power/cooling profile, rewritten SNMP traps, and actionable alert emails with deep links to each device. Now sole administrator across 70+ sites.</p></div>
+      <div class="cap"><h3>Monitoring, Alerting &amp; Incident Platform (.NET)</h3><p>Architected and shipped, as sole developer, a self-hosted platform that replaced a three-vendor alarm pipeline — per-site incident grouping, noise suppression, on-call paging, a web ack app, and a heartbeat dead-man's switch. Paging logic, fully in-house.</p></div>
+      <div class="cap"><h3>Maintenance-Window Automation</h3><p>Scheduled alarm-suppression windows with automated post-window reporting, so routine generator testing stops paging the team while still leaving a full record of what tripped.</p></div>
+      <div class="cap"><h3>Bulk Asset &amp; Decommission Tooling</h3><p>Command-line tooling driving the DCIM API — dry-run first, with a confirmation gate and full audit trail — for safe, fast, auditable bulk decommissioning.</p></div>
+      <div class="cap"><h3>Energy &amp; Capacity Reporting</h3><p>A career-long responsibility: multi-platform, multi-sensor telemetry turned into reliable energy and capacity intelligence, with automated pulls and data-quality filtering. The numbers leadership plans on.</p></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h2wrap"><h2>Skills</h2></div>
+    <div class="skillgroup"><div class="lbl">Critical Facilities</div><div class="pills">
+      <span class="pill">UPS</span><span class="pill">Generators</span><span class="pill">ATS &amp; Switchgear</span><span class="pill">Precision Cooling</span><span class="pill">Environmental Monitoring</span><span class="pill">Tier Reliability</span><span class="pill">Data Center Design (CDCDP)</span></div></div>
+    <div class="skillgroup"><div class="lbl">DCIM / Monitoring</div><div class="pills">
+      <span class="pill">Nlyte (NAO/NEO)</span><span class="pill">EnviroNET</span><span class="pill">SNMP</span><span class="pill">Modbus</span><span class="pill">BACnet</span></div></div>
+    <div class="skillgroup"><div class="lbl">Software / Data</div><div class="pills">
+      <span class="pill">C# / .NET</span><span class="pill">MSSQL / T-SQL</span><span class="pill">Python</span><span class="pill">PowerShell</span><span class="pill">REST &amp; GraphQL</span><span class="pill">Git</span></div></div>
+    <div class="skillgroup"><div class="lbl">Delivery</div><div class="pills">
+      <span class="pill">Capital Projects</span><span class="pill">Vendor Management</span><span class="pill">Incident / On-Call</span><span class="pill">Reporting &amp; Analysis</span></div></div>
+  </section>
+
+  <section class="about">
+    <div class="h2wrap"><h2>About</h2></div>
+    <p>For fourteen years I've operated the power and cooling behind a global IT footprint — data centers, call centers, and COLOs across multiple countries — targeting six-nines availability from a small team. I've led resiliency upgrades, delivered new-site build-outs, and managed major equipment replacements and decommissions end to end.</p>
+    <p>What sets my work apart is the second half: I'm the sole administrator of our Nlyte DCIM platform, and — largely self-taught — I design and ship the custom software that monitors and manages the environment. I replaced a three-vendor alerting pipeline with a platform I built in .NET, write the SQL behind the DCIM, and build Python tooling for data and reporting. If it involves keeping critical infrastructure alive, or automating the parts that shouldn't need a human, that's my lane.</p>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="h2wrap" style="margin:0"><h2>Let's talk</h2><p>Open to conversations about critical facilities, DCIM, and the software that runs them.</p></div>
+    <div class="btns">
+      <a class="btn primary" href="mailto:skr1831@gmail.com">skr1831@gmail.com</a>
+      <a class="btn ghost" style="border-color:var(--line);color:var(--accent)" href="https://www.linkedin.com/in/samuel-ryan-94671365" target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn ghost" style="border-color:var(--line);color:var(--accent)" href="https://github.com/SamuelKennethRyan" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
