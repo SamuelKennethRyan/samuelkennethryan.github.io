@@ -1,0 +1,256 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Live Demo: A Power Loss, Handled — Samuel K. Ryan</title>
+<meta name="description" content="An interactive, accurately-sequenced demonstration: how a utility power loss cascades into device alarms, how the backup chain carries it, and what separates a quiet summary from a real page.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0f172a;--muted:#5b6676;--bg:#ffffff;--panel:#f7f9fc;--line:#e6eaf1;--a1:#22d3ee;--a2:#3b82f6;--accent:#2563eb;
+    --info:#64748b;--warn:#d97706;--crit:#dc2626;--ok:#059669}
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--ink);background:var(--bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.65}
+  h1,h2,h3{font-family:Sora,Inter,sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  .top{color:#eaf2ff;background:radial-gradient(900px 400px at 12% -20%,rgba(34,211,238,.16),transparent 60%),linear-gradient(160deg,#0a1424,#0d1b30 60%,#0a1626)}
+  .top .wrap{padding:34px 24px 44px}
+  .topnav{display:flex;gap:22px;margin-bottom:26px;font-size:.9rem}
+  .topnav a{color:#9fb3cc;font-weight:600} .topnav a:hover{color:#fff;text-decoration:none}
+  .eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:#8fe3f2;font-weight:600;margin:0 0 12px}
+  .top h1{font-size:clamp(1.9rem,4.5vw,2.7rem);line-height:1.1;margin:0 0 10px}
+  .grad{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .top p.sub{color:#c2d3ea;margin:0;font-size:1.05rem;max-width:46rem}
+
+  .controls{padding:24px 0 4px}
+  .controls p{margin:0 0 14px;color:var(--muted)}
+  .btn{font:inherit;font-weight:600;border:0;border-radius:9px;padding:11px 16px;cursor:pointer;margin:0 8px 8px 0}
+  .btn.a{background:linear-gradient(90deg,var(--a1),var(--a2));color:#04101f}
+  .btn.b{background:#fee2e2;color:#991b1b}
+  .btn.reset{background:var(--panel);color:var(--muted);border:1px solid var(--line)}
+  .btn:disabled{opacity:.5;cursor:not-allowed}
+
+  /* pop-up simulated clock */
+  .simclock{display:none;align-items:center;gap:16px;margin:6px 0 14px;padding:12px 18px;border-radius:12px;
+    background:linear-gradient(160deg,#0b1a30,#0a1424);color:#dbe7f7;border:1px solid #16305a}
+  .simclock.on{display:flex}
+  .simclock .lbl{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:#7f9ec4}
+  .simclock .ct{font-family:"JetBrains Mono",monospace;font-weight:700;font-size:1.9rem;line-height:1;color:#8fe3f2}
+  .simclock .fac{font-family:"JetBrains Mono",monospace;font-size:.82rem;color:#c9a24d;min-width:150px}
+  .simclock .fac.ff{color:#fbbf24}
+
+  .stage{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:6px 0 40px}
+  @media(max-width:780px){.stage{grid-template-columns:1fr}}
+  .col{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:flex;flex-direction:column;min-height:360px}
+  .colhead{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--panel);display:flex;justify-content:space-between;align-items:center}
+  .colhead b{font-size:.95rem} .colhead .count{font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--muted)}
+  .feed{padding:10px;overflow-y:auto;flex:1;max-height:460px}
+  .row{display:grid;grid-template-columns:12px 52px 1fr;gap:8px;align-items:start;padding:7px 8px;border-radius:7px;font-size:.85rem;animation:fade .25s ease}
+  .row+.row{margin-top:3px}
+  .dot{width:9px;height:9px;border-radius:50%;margin-top:6px}
+  .row .ts{font-family:"JetBrains Mono",monospace;color:var(--muted);font-size:.76rem;padding-top:1px}
+  .row .msg b{display:block}
+  .sev-info .dot{background:var(--info)} .sev-warn .dot{background:var(--warn)} .sev-crit .dot{background:var(--crit)} .sev-ok .dot{background:var(--ok)}
+  .sev-warn{background:#fffbeb} .sev-crit{background:#fef2f2} .sev-ok{background:#ecfdf5}
+
+  .empty{color:#9aa6b6;font-size:.9rem;padding:24px 10px;text-align:center}
+  .card{border-radius:10px;padding:16px;animation:fade .3s ease;border:1px solid var(--line)}
+  .card h3{margin:0 0 6px;font-size:1.02rem}
+  .card p{margin:0 0 8px;font-size:.9rem}
+  .card .note{margin:0;font-size:.85rem;font-style:italic;color:var(--muted)}
+  .card.watch{background:#fffbeb;border-color:#fcd34d} .card.watch h3{color:#92400e}
+  .card.mon{background:#eff6ff;border-color:#93c5fd} .card.mon h3{color:#1e40af}
+  .card.ok{background:#ecfdf5;border-color:#6ee7b7} .card.ok h3{color:#065f46}
+  .card.crit{background:#fef2f2;border-color:#fca5a5} .card.crit h3{color:#991b1b}
+
+  .takeaway{border-top:1px solid var(--line);padding:28px 0 22px;color:#33404f;max-width:48rem}
+  .takeaway b{color:var(--ink)}
+  .fineprint{padding:0 0 70px;color:#8794a5;font-size:.82rem;max-width:48rem}
+  @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <nav class="topnav"><a href="index.html">Home</a><a href="field-notes.html">Field Notes</a><a href="demo.html">Live Demo</a></nav>
+    <p class="eyebrow">Live Demo &middot; mocked data, real sequence of operations</p>
+    <h1>A power loss, <span class="grad">handled.</span></h1>
+    <p class="sub">Utility power drops at a site. A dozen device alarms fire at once. Watch the real sequence play out on an accelerated clock — the UPS carries the load, the generator picks it up, the building rides through, and then rolls back to utility. Then break it: make a backup fail, and watch the page change.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="controls">
+    <p>Left = every raw device signal, in the order it really happens. Right = what the on-call person actually experiences. The clock runs at up to ~50&times; real time so a five-minute outage plays in seconds.</p>
+    <button class="btn a" id="runA">&#9654; Utility outage &mdash; backups hold</button>
+    <button class="btn b" id="runB">&#9654; Generator fails to start</button>
+    <button class="btn reset" id="reset">Reset</button>
+  </div>
+
+  <div class="simclock" id="simclock">
+    <span class="lbl">Simulated<br>clock</span>
+    <span class="ct" id="ct">00:00</span>
+    <span class="fac" id="fac">&times;1</span>
+  </div>
+
+  <div class="stage">
+    <div class="col">
+      <div class="colhead"><b>Raw device signals</b><span class="count" id="rawcount">0 alarms</span></div>
+      <div class="feed" id="rawfeed"><div class="empty">Idle &mdash; pick a scenario above.</div></div>
+    </div>
+    <div class="col">
+      <div class="colhead"><b>What the on-call gets</b><span class="count" id="occount">&mdash;</span></div>
+      <div class="feed" id="ocfeed"><div class="empty">Idle.</div></div>
+    </div>
+  </div>
+
+  <div class="takeaway" id="takeaway"></div>
+  <div class="fineprint">Generic site (HTX-DC1) and device names &mdash; no real topology, addresses, or configuration. The <em>behavior</em> is real: UPS on battery, ATS transfer to and from the emergency source, CRAC power-cycle and loss-of-power, generator start and post-transfer cooldown.</div>
+</div>
+
+<script>
+const SITE = "HTX-DC1";
+
+// Each event has a scenario time `s` (seconds). Raw signals stream on the left;
+// oc (on-call) updates replace the single incident card on the right.
+const SCEN = {
+  A: {
+    // clock keyframes: {r: real ms, s: scenario seconds}. Between keyframes the
+    // clock interpolates linearly, so quiet stretches visibly fast-forward.
+    clock: [{r:0,s:0},{r:7000,s:3},{r:11000,s:10},{r:15000,s:32},
+            {r:20000,s:300},{r:26000,s:310},{r:32000,s:608},{r:33500,s:612}],
+    events: [
+      {s:0.0, side:'raw', sev:'warn', dev:'ATS-01',       msg:'Utility (normal) source lost'},
+      {s:0.4, side:'raw', sev:'warn', dev:'UPS-01',       msg:'Input voltage fail'},
+      {s:0.8, side:'raw', sev:'warn', dev:'UPS-01',       msg:'On battery'},
+      {s:1.1, side:'raw', sev:'warn', dev:'UPS-01',       msg:'Maintenance bypass inhibited'},
+      {s:1.4, side:'raw', sev:'warn', dev:'UPS-01',       msg:'Alarm present'},
+      {s:1.8, side:'raw', sev:'info', dev:'Generator-01', msg:'Start signal received'},
+      {s:2.4, side:'raw', sev:'warn', dev:'CRAC-01',      msg:'Comm loss (power cycling)'},
+      {s:2.8, side:'raw', sev:'warn', dev:'CRAC-02',      msg:'Comm loss (power cycling)'},
+      {s:1.0, side:'oc', state:'watching', title:''+SITE+' &mdash; utility power event',
+        body:'Device alarms grouped into one site incident. Holding grace window before paging.'},
+
+      {s:6.0, side:'raw', sev:'ok',   dev:'Generator-01', msg:'Running &mdash; up to voltage &amp; frequency'},
+      {s:7.0, side:'raw', sev:'info', dev:'ATS-01',       msg:'Emergency source accepted'},
+      {s:8.0, side:'raw', sev:'ok',   dev:'ATS-01',       msg:'Transferred to emergency (generator)'},
+      {s:9.0, side:'raw', sev:'ok',   dev:'UPS-01',       msg:'On battery cleared &mdash; load on generator'},
+      {s:9.4, side:'raw', sev:'ok',   dev:'UPS-01',       msg:'Input voltage restored; alarms cleared'},
+      {s:10,  side:'oc', state:'notify', title:'Page sent &mdash; '+SITE+' on generator',
+        body:'Utility outage; generator carrying the load, critical load protected. No immediate action required.'},
+
+      {s:20,  side:'raw', sev:'ok',   dev:'CRAC-01',      msg:'Comm restored'},
+      {s:20.5,side:'raw', sev:'warn', dev:'CRAC-01',      msg:'Loss of power (power-up notification)'},
+      {s:22,  side:'raw', sev:'ok',   dev:'CRAC-02',      msg:'Comm restored'},
+      {s:22.5,side:'raw', sev:'warn', dev:'CRAC-02',      msg:'Loss of power (power-up notification)'},
+      {s:30,  side:'raw', sev:'ok',   dev:'CRAC-01 / 02', msg:'Power-up alerts cleared &mdash; cooling normal'},
+
+      {s:300, side:'raw', sev:'info', dev:'ATS-01',       msg:'Utility (normal) source restored'},
+      {s:305, side:'raw', sev:'ok',   dev:'ATS-01',       msg:'Retransferred to normal (utility)'},
+      {s:308, side:'raw', sev:'info', dev:'Generator-01', msg:'Cooldown started &mdash; running unloaded (5 min)'},
+      {s:608, side:'raw', sev:'ok',   dev:'Generator-01', msg:'Stopped &mdash; cooldown complete'},
+      {s:610, side:'oc', state:'resolved', title:'Incident closed &mdash; '+SITE+'',
+        body:'Utility restored at 05:00; site returned to normal. No action taken.'},
+    ],
+  },
+  B: {
+    clock: [{r:0,s:0},{r:7000,s:3},{r:12500,s:11}],
+    events: [
+      {s:0.0, side:'raw', sev:'warn', dev:'ATS-01',       msg:'Utility (normal) source lost'},
+      {s:0.4, side:'raw', sev:'warn', dev:'UPS-01',       msg:'Input voltage fail'},
+      {s:0.8, side:'raw', sev:'warn', dev:'UPS-01',       msg:'On battery'},
+      {s:1.1, side:'raw', sev:'warn', dev:'UPS-01',       msg:'Maintenance bypass inhibited'},
+      {s:1.4, side:'raw', sev:'warn', dev:'UPS-01',       msg:'Alarm present'},
+      {s:1.8, side:'raw', sev:'info', dev:'Generator-01', msg:'Start signal received'},
+      {s:2.4, side:'raw', sev:'warn', dev:'CRAC-01',      msg:'Comm loss (power cycling)'},
+      {s:2.8, side:'raw', sev:'warn', dev:'CRAC-02',      msg:'Comm loss (power cycling)'},
+      {s:1.0, side:'oc', state:'watching', title:''+SITE+' &mdash; utility power event',
+        body:'Device alarms grouped into one site incident. Holding grace window before paging.'},
+
+      {s:6.0, side:'raw', sev:'crit', dev:'Generator-01', msg:'START FAILED'},
+      {s:7.0, side:'raw', sev:'crit', dev:'ATS-01',       msg:'No emergency source &mdash; remains off normal'},
+      {s:8.0, side:'raw', sev:'crit', dev:'UPS-01',       msg:'On battery &mdash; runtime ~12 min and dropping'},
+      {s:8.5, side:'oc', state:'paged', title:'&#128308; PAGE &mdash; '+SITE+' on battery, generator failed',
+        body:'Generator failed to start; no emergency source. UPS on battery, ~12 min runtime; cooling offline. Dispatch immediately.'},
+      {s:9.5, side:'raw', sev:'crit', dev:'CRAC-01 / 02', msg:'Offline &mdash; no power, cooling lost'},
+    ],
+  },
+};
+const TAKE = {
+  A: 'A five-minute utility outage is worth knowing about, so the team gets paged &mdash; but it\'s <b>one</b> page for the whole site, and it says what matters: on generator, critical load protected, nothing to do but watch. A dozen device alarms became a single, calm, informative page &mdash; and the incident closed itself when utility returned.',
+  B: 'Same opening &mdash; same UPS-on-battery, same CRAC power-cycle. But the generator didn\'t start, so there\'s no emergency source and the load is riding a battery with a countdown while cooling is dark. <b>That\'s the difference the page has to carry:</b> one calm notice when the backups hold, one urgent call to act the moment one doesn\'t.',
+};
+
+// ---- interpolation over clock keyframes ----
+const clamp01=t=>Math.max(0,Math.min(1,t));
+const lerp=(a,b,t)=>a+(b-a)*t;
+function mapStoR(K,sv){for(let i=0;i<K.length-1;i++){if(sv<=K[i+1].s){const t=clamp01((sv-K[i].s)/((K[i+1].s-K[i].s)||1));return lerp(K[i].r,K[i+1].r,t);}}return K[K.length-1].r;}
+function mapRtoS(K,rv){for(let i=0;i<K.length-1;i++){if(rv<=K[i+1].r){const t=clamp01((rv-K[i].r)/((K[i+1].r-K[i].r)||1));return lerp(K[i].s,K[i+1].s,t);}}return K[K.length-1].s;}
+function factorAt(K,rv){for(let i=0;i<K.length-1;i++){if(rv<=K[i+1].r){return (K[i+1].s-K[i].s)/(((K[i+1].r-K[i].r)||1)/1000);}}return 1;}
+function fmt(s){s=Math.max(0,Math.round(s));const m=Math.floor(s/60),ss=s%60;return String(m).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
+
+const $=id=>document.getElementById(id);
+const rawfeed=$('rawfeed'), ocfeed=$('ocfeed');
+const CLASS={watching:'watch',notify:'mon',resolved:'ok',paged:'crit'};
+const COUNT={watching:'1 incident · grouping',notify:'1 incident · paged (on generator)',resolved:'1 incident · closed',paged:'1 incident · PAGED'};
+let timers=[], rafId=null, rawN=0;
+
+function reset(){
+  timers.forEach(clearTimeout); timers=[];
+  if(rafId){cancelAnimationFrame(rafId); rafId=null;}
+  rawN=0;
+  rawfeed.innerHTML='<div class="empty">Idle &mdash; pick a scenario above.</div>';
+  ocfeed.innerHTML='<div class="empty">Idle.</div>';
+  $('rawcount').textContent='0 alarms'; $('occount').innerHTML='&mdash;';
+  $('takeaway').innerHTML='';
+  $('simclock').classList.remove('on'); $('ct').textContent='00:00'; $('fac').innerHTML='&times;1'; $('fac').classList.remove('ff');
+  buttons(false);
+}
+function buttons(dis){ $('runA').disabled=dis; $('runB').disabled=dis; }
+function addRaw(e){
+  if(rawN===0) rawfeed.innerHTML='';
+  rawN++;
+  const d=document.createElement('div');
+  d.className='row sev-'+e.sev;
+  d.innerHTML='<span class="dot"></span><span class="ts">'+fmt(e.s)+'</span><span class="msg"><b>'+e.dev+'</b>'+e.msg+'</span>';
+  rawfeed.appendChild(d); rawfeed.scrollTop=rawfeed.scrollHeight;
+  $('rawcount').textContent=rawN+' alarm'+(rawN===1?'':'s');
+}
+function setOC(e){
+  ocfeed.innerHTML='';
+  const d=document.createElement('div');
+  d.className='card '+CLASS[e.state];
+  d.innerHTML='<h3>'+e.title+'</h3><p>'+e.body+'</p>'+(e.note?'<p class="note">'+e.note+'</p>':'');
+  ocfeed.appendChild(d);
+  $('occount').textContent=COUNT[e.state];
+}
+function run(name){
+  reset(); buttons(true);
+  const sc=SCEN[name], K=sc.clock;
+  $('simclock').classList.add('on');
+  sc.events.forEach(e=> timers.push(setTimeout(()=> e.side==='raw'?addRaw(e):setOC(e), mapStoR(K,e.s))) );
+  const endR=K[K.length-1].r;
+  // drive the pop-up clock
+  const t0=performance.now();
+  (function tick(){
+    const rv=performance.now()-t0;
+    if(rv>=endR){ $('ct').textContent=fmt(K[K.length-1].s); $('fac').innerHTML='&times;1'; $('fac').classList.remove('ff'); rafId=null; return; }
+    $('ct').textContent=fmt(mapRtoS(K,rv));
+    const f=Math.max(1,Math.round(factorAt(K,rv)));
+    const ff=f>=8;
+    $('fac').classList.toggle('ff',ff);
+    $('fac').innerHTML=(ff?'&#9654;&#9654; fast-forward &nbsp;':'')+'&times;'+f;
+    rafId=requestAnimationFrame(tick);
+  })();
+  timers.push(setTimeout(()=>{ $('takeaway').innerHTML=TAKE[name]; buttons(false); }, endR+400));
+}
+$('runA').onclick=()=>run('A');
+$('runB').onclick=()=>run('B');
+$('reset').onclick=reset;
+</script>
+</body>
+</html>

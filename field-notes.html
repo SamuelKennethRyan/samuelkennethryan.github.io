@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field Notes: Signal Over Noise — Samuel K. Ryan</title>
+<meta name="description" content="Why over-communication destroys communication, and how I design monitoring and alerting that respects people's attention.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#0f172a;--muted:#5b6676;--bg:#ffffff;--panel:#f7f9fc;--line:#e6eaf1;--a1:#22d3ee;--a2:#3b82f6;--accent:#2563eb}
+  *{box-sizing:border-box}
+  body{margin:0;color:var(--ink);background:var(--bg);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;line-height:1.72}
+  h1,h2,h3{font-family:Sora,Inter,sans-serif}
+  a{color:var(--accent);text-decoration:none} a:hover{text-decoration:underline}
+  .wrap{max-width:720px;margin:0 auto;padding:0 24px}
+
+  .top{color:#eaf2ff;background:radial-gradient(900px 400px at 12% -20%,rgba(34,211,238,.16),transparent 60%),linear-gradient(160deg,#0a1424,#0d1b30 60%,#0a1626)}
+  .top .wrap{padding:34px 24px 46px}
+  .topnav{display:flex;gap:22px;margin-bottom:26px;font-size:.9rem}
+  .topnav a{color:#9fb3cc;font-weight:600} .topnav a:hover{color:#fff;text-decoration:none}
+  .eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:#8fe3f2;font-weight:600;margin:0 0 12px}
+  .top h1{font-size:clamp(1.9rem,4.5vw,2.7rem);line-height:1.1;margin:0 0 10px}
+  .grad{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .top p.sub{color:#c2d3ea;margin:0;font-size:1.05rem}
+
+  article{padding:48px 0 20px}
+  article h2{font-size:1.35rem;margin:38px 0 10px}
+  article h3{font-size:1.05rem;margin:26px 0 6px}
+  article p{margin:0 0 16px}
+  .pquote{border-left:3px solid var(--accent);background:var(--panel);padding:16px 20px;border-radius:0 10px 10px 0;font-size:1.12rem;color:#25324a;margin:22px 0}
+  ul.principles{list-style:none;padding:0;margin:8px 0 8px}
+  ul.principles li{padding:12px 16px;background:var(--panel);border:1px solid var(--line);border-radius:9px;margin-bottom:10px}
+  ul.principles li b{color:var(--ink)}
+  .dec{margin:0 0 18px}
+  .dec h3{margin-bottom:2px}
+  footer{border-top:1px solid var(--line);padding:34px 0 70px;color:var(--muted)}
+  footer a{font-weight:600;margin-right:16px}
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="wrap">
+    <nav class="topnav"><a href="index.html">Home</a><a href="field-notes.html">Field Notes</a><a href="demo.html">Live Demo</a></nav>
+    <p class="eyebrow">Field Notes</p>
+    <h1>Signal over noise: <span class="grad">designing alerts that respect attention.</span></h1>
+    <p class="sub">Why over-communication destroys communication — and how I build monitoring that fights it.</p>
+  </div>
+</div>
+
+<div class="wrap">
+  <article>
+
+    <h2>The lie of "over-communication"</h2>
+    <p>My whole corporate career I've been told there's no such thing as over-communication. I've never believed it. In the information age, over-communicating is the <em>easy</em> thing — it's the default. And it doesn't strengthen communication; it destroys it.</p>
+    <p>When everything is urgent, nothing is. Automated emails, blanket notifications, and reflexive cover-yourself messages pile up until real signal is buried, and people cope the only way they can — by ignoring most of it. I've watched it get bad enough that reaching an actual person by email is nearly impossible: not because no one's there, but because the channel is saturated.</p>
+    <div class="pquote">Over-communication doesn't add up to more communication. It adds up to noise — and noise is the enemy of the very thing it pretends to be.</div>
+
+    <h2>Monitoring is the same problem, wired to a pager</h2>
+    <p>Alerting is corporate over-communication with a pager attached. A monitoring system that fires for everything trains us to ignore much of it — and the one alert that actually mattered dies in the flood, at 3 a.m., unread.</p>
+    <p>So I design monitoring the way I wish people communicated: every alert has to <em>earn</em> the interruption. That's not a nice-to-have — it's the whole job. A pager people trust is one that stays quiet until it shouldn't.</p>
+    <p>And cutting the noise isn't the same as throwing information away. The alerts that aren't page-worthy don't get discarded — they get summarized and reported. Nothing disappears; it just becomes easier to digest, so the team can take in the whole picture at a glance and dig into the detail wherever it's warranted.</p>
+
+    <h2>Principles I build around</h2>
+    <ul class="principles">
+      <li><b>Actionable, or it's not a page.</b> If there's nothing to do about it, it's an FYI — summarized into a report you read on your own time, not fired at a phone at night. Nothing's discarded; it's just routed to the right level of attention.</li>
+      <li><b>One event, one alert.</b> A site-wide power event should page once for the site, not fifty times for fifty devices.</li>
+      <li><b>Signal has to survive the noise.</b> A condition that flaps in and out must neither spam the team nor quietly slip through.</li>
+      <li><b>Fail loud.</b> If the monitor itself dies, that has to be the loudest thing in the room — silence must never look like health.</li>
+      <li><b>Own the logic.</b> Don't outsource the decision of what's worth waking someone up for to a vendor black box you can't tune.</li>
+    </ul>
+
+    <h2>Design decisions (and the tradeoffs)</h2>
+    <p>Those principles turned into concrete choices when I built our alerting and incident-management platform. The interesting part isn't the code — it's the tradeoffs.</p>
+
+    <div class="dec"><h3>Group by site, then wait a beat</h3>
+      <p>Alarms fold into a single per-location incident, and the incident holds for a short grace window before it fires — long enough to let a burst accumulate so a real event pages as one coherent alert instead of a storm. The tradeoff is a few seconds of latency; the payoff is an on-call who gets "Site X is in trouble" instead of forty fragments.</p></div>
+
+    <div class="dec"><h3>Catch the flappers, but hold them down</h3>
+      <p>A point that trips repeatedly in a short window (say, three times in five minutes) gets treated as page-worthy even when it's momentarily clear — otherwise a flapping sensor slips between the raindrops and never alerts. And once flagged, the incident holds down instead of auto-closing the instant it flickers back to normal, so it can't cycle its way into being ignored. The threshold is a dial: too tight and you miss slow flaps, too loose and you page on ordinary chatter.</p></div>
+
+    <div class="dec"><h3>Suppress the expected — but still record it</h3>
+      <p>Scheduled work like generator testing shouldn't page anyone. Maintenance windows suppress those alerts automatically, but the system still logs exactly what tripped during the window, so "we suppressed it" never becomes "we missed it."</p></div>
+
+    <div class="dec"><h3>A dead-man's switch that doesn't cry wolf</h3>
+      <p>The monitor sends a heartbeat; if it stops, that pages — silence must never be mistaken for health. But the heartbeat is deliberately decoupled from transient hiccups (a database briefly slow behind a nightly job, for instance) so a momentary stall doesn't fire a false alarm at midnight, while a genuinely dead process still escalates. Learned that one the hard way.</p></div>
+
+    <div class="dec"><h3>Bring the logic in-house</h3>
+      <p>The old path ran alarms through a chain of vendor tools with little control over grouping or noise. Replacing it with an owned platform meant the paging logic — the part that decides whether a human's evening gets interrupted — is ours to see, test, and tune. You can't fix noise you can't reach.</p></div>
+
+    <h2>What's next</h2>
+    <p>The next improvement isn't more alerts — it's richer ones. Attaching the relevant context to each incident (the affected device's own recent logs and history) so the person who gets paged already has what they need to act, instead of starting a scavenger hunt. Same goal as always: fewer signals, each one worth more.</p>
+
+  </article>
+</div>
+
+<footer>
+  <div class="wrap">
+    <a href="index.html">&larr; Back home</a>
+    <a href="mailto:skr1831@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/samuel-ryan-94671365" target="_blank" rel="noopener">LinkedIn</a>
+  </div>
+</footer>
+
+</body>
+</html>
