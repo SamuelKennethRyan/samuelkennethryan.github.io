@@ -18,8 +18,14 @@
   .wrap{max-width:980px;margin:0 auto;padding:0 24px}
   .top{color:#eaf2ff;background:radial-gradient(900px 400px at 12% -20%,rgba(34,211,238,.16),transparent 60%),linear-gradient(160deg,#0a1424,#0d1b30 60%,#0a1626)}
   .top .wrap{padding:34px 24px 44px}
-  .topnav{display:flex;gap:22px;margin-bottom:26px;font-size:.9rem}
-  .topnav a{color:#9fb3cc;font-weight:600} .topnav a:hover{color:#fff;text-decoration:none}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(10,20,36,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:13px 24px}
+  .nav .brand{color:#eaf2ff;font-family:Sora,Inter,sans-serif;font-weight:700;font-size:.95rem}
+  .nav .brand:hover{color:#fff;text-decoration:none}
+  .nav .links{display:flex;gap:20px;font-size:.9rem}
+  .nav .links a{color:#9fb3cc;font-weight:600}
+  .nav .links a:hover{color:#fff;text-decoration:none}
+  .nav .links a.active{color:#8fe3f2}
   .eyebrow{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:#8fe3f2;font-weight:600;margin:0 0 12px}
   .top h1{font-size:clamp(1.9rem,4.5vw,2.7rem);line-height:1.1;margin:0 0 10px}
   .grad{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -74,9 +80,15 @@
 </head>
 <body>
 
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Samuel K. Ryan</a>
+    <nav class="links"><a href="index.html">Home</a><a href="field-notes.html">Field Notes</a><a href="demo.html" class="active">Live Demo</a></nav>
+  </div>
+</header>
+
 <div class="top">
   <div class="wrap">
-    <nav class="topnav"><a href="index.html">Home</a><a href="field-notes.html">Field Notes</a><a href="demo.html">Live Demo</a></nav>
     <p class="eyebrow">Live Demo &middot; mocked data, real sequence of operations</p>
     <h1>A power loss, <span class="grad">handled.</span></h1>
     <p class="sub">Utility power drops at a site. A dozen device alarms fire at once. Watch the real sequence play out on an accelerated clock — the UPS carries the load, the generator picks it up, the building rides through, and then rolls back to utility. Then break it: make a backup fail, and watch the page change.</p>

@@ -31,9 +31,14 @@
      background-image:radial-gradient(rgba(255,255,255,.05) 1px,transparent 1px);
      background-size:22px 22px;opacity:.5;pointer-events:none}
   .hero .wrap{position:relative;padding:72px 24px 72px}
-  .topnav{display:flex;gap:22px;margin-bottom:30px;font-size:.9rem}
-  .topnav a{color:#9fb3cc;font-weight:600}
-  .topnav a:hover{color:#fff;text-decoration:none}
+  .nav{position:sticky;top:0;z-index:50;background:rgba(10,20,36,.85);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid rgba(255,255,255,.08)}
+  .nav .wrap{display:flex;align-items:center;justify-content:space-between;padding:13px 24px}
+  .nav .brand{color:#eaf2ff;font-family:Sora,Inter,sans-serif;font-weight:700;font-size:.95rem}
+  .nav .brand:hover{color:#fff;text-decoration:none}
+  .nav .links{display:flex;gap:20px;font-size:.9rem}
+  .nav .links a{color:#9fb3cc;font-weight:600}
+  .nav .links a:hover{color:#fff;text-decoration:none}
+  .nav .links a.active{color:#8fe3f2}
   .eyebrow{font-size:.8rem;letter-spacing:.18em;text-transform:uppercase;color:#8fe3f2;margin:0 0 14px;font-weight:600}
   .hero h1{font-size:clamp(2.2rem,5vw,3.4rem);line-height:1.05;margin:0 0 16px;letter-spacing:-.01em}
   .grad{background:linear-gradient(90deg,var(--a1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
@@ -85,9 +90,15 @@
 </head>
 <body>
 
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="index.html">Samuel K. Ryan</a>
+    <nav class="links"><a href="index.html" class="active">Home</a><a href="field-notes.html">Field Notes</a><a href="demo.html">Live Demo</a></nav>
+  </div>
+</header>
+
 <div class="hero">
   <div class="wrap">
-    <nav class="topnav"><a href="index.html">Home</a><a href="field-notes.html">Field Notes</a><a href="demo.html">Live Demo</a></nav>
     <p class="eyebrow">Critical Facilities &middot; DCIM &middot; Software</p>
     <h1>Samuel K. Ryan<br><span class="grad">Data center engineer who builds the software that runs it.</span></h1>
     <p class="tag">I keep mission-critical power and cooling online across a global IT fleet — and I build the monitoring, alerting, and automation that keeps it that way.</p>
