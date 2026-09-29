@@ -85,7 +85,7 @@
     </ul>
 
     <h2>Design decisions (and the tradeoffs)</h2>
-    <p>Those principles turned into concrete choices when I built our alerting and incident-management platform. The interesting part isn't the code — it's the tradeoffs.</p>
+    <p>Those principles turned into concrete choices when I built our alerting and incident-management layer on top of Nlyte. The interesting part isn't the code — it's the tradeoffs.</p>
 
     <div class="dec"><h3>Group by site, then wait a beat</h3>
       <p>Alarms fold into a single per-location incident, and the incident holds for a short grace window before it fires — long enough to let a burst accumulate so a real event pages as one coherent alert instead of a storm. The tradeoff is a few seconds of latency; the payoff is an on-call who gets "Site X is in trouble" instead of forty fragments.</p></div>

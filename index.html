@@ -163,7 +163,7 @@
     <div class="h2wrap"><h2>Selected work</h2><p>A few systems I designed, built, and own.</p></div>
     <div class="grid">
       <div class="cap"><h3>Enterprise DCIM Deployment &amp; Legacy Migration</h3><p>Led a solo, on-prem Nlyte rollout replacing an aging monitoring system across a global fleet. When the paid vendor stalled, I built it all myself — every power/cooling profile, rewritten SNMP traps, and actionable alert emails with deep links to each device. Now sole administrator across 70+ sites.</p></div>
-      <div class="cap"><h3>Monitoring, Alerting &amp; Incident Platform (.NET)</h3><p>Architected and shipped, as sole developer, a self-hosted platform that replaced a three-vendor alarm pipeline — per-site incident grouping, noise suppression, on-call paging, a web ack app, and a heartbeat dead-man's switch. Paging logic, fully in-house.</p></div>
+      <div class="cap"><h3>Alerting &amp; Incident Layer on Nlyte (.NET)</h3><p>Architected and shipped, as sole developer, a self-hosted SNMP trap receiver and paging service on top of Nlyte — per-site incident grouping, noise suppression, on-call paging via GoAlert, a web ack app, and a heartbeat dead-man's switch. Cut BigPanda out of the alerting path; paging logic in-house.</p></div>
       <div class="cap"><h3>Maintenance-Window Automation</h3><p>Scheduled alarm-suppression windows with automated post-window reporting, so routine generator testing stops paging the team while still leaving a full record of what tripped.</p></div>
       <div class="cap"><h3>Bulk Asset &amp; Decommission Tooling</h3><p>Command-line tooling driving the DCIM API — dry-run first, with a confirmation gate and full audit trail — for safe, fast, auditable bulk decommissioning.</p></div>
       <div class="cap"><h3>Energy &amp; Capacity Reporting</h3><p>A career-long responsibility: multi-platform, multi-sensor telemetry turned into reliable energy and capacity intelligence, with automated pulls and data-quality filtering. The numbers leadership plans on.</p></div>
@@ -201,7 +201,7 @@
   <section class="about">
     <div class="h2wrap"><h2>About</h2></div>
     <p>For fourteen years I've operated the power and cooling behind a global IT footprint — data centers, call centers, and COLOs across multiple countries — targeting six-nines availability from a small team. I've led resiliency upgrades, delivered new-site build-outs, and managed major equipment replacements and decommissions end to end.</p>
-    <p>What sets my work apart is the second half: I'm the sole administrator of our Nlyte DCIM platform, and — largely self-taught — I design and ship the custom software that monitors and manages the environment. I replaced a three-vendor alerting pipeline with a platform I built in .NET, write the SQL behind the DCIM, and build Python tooling for data and reporting. If it involves keeping critical infrastructure alive, or automating the parts that shouldn't need a human, that's my lane.</p>
+    <p>What sets my work apart is the second half: I'm the sole administrator of our Nlyte DCIM platform, and — largely self-taught — I design and ship the custom software that monitors and manages the environment. I built an alerting and incident-management layer on top of it in .NET — an SNMP trap receiver with paging that cut BigPanda out of the alerting path — write the SQL behind the DCIM, and build Python tooling for data and reporting. If it involves keeping critical infrastructure alive, or automating the parts that shouldn't need a human, that's my lane.</p>
   </section>
 
 </div>
